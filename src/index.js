@@ -1,6 +1,5 @@
 require('dotenv').config();
 
-const Enmap = require('enmap');
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
@@ -49,18 +48,5 @@ for (const file of commandFiles) {
 	const command = require(filePath);
 	client.commands.set(command.data.name, command);
 }
-
-const chars = new Enmap({
-    name: 'chars',
-    dataDir: './src/data/chars/'
-});
-
-const log = new Enmap({
-    name: 'log',
-    dataDir: './src/data/log/'
-});
-
-client.charsDB = chars;
-client.logDB = log;
 
 client.login(TOKEN);

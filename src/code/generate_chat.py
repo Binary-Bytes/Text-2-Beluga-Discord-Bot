@@ -1,9 +1,12 @@
 from PIL import Image, ImageFont, ImageDraw 
-from pilmoji import Pilmoji
 import sys
 import datetime
 import os
 import json
+import random
+import string
+import requests
+import shutil
 from compile_video import *
 
 # CONSTANTS
@@ -51,7 +54,7 @@ def generate_chat(messages, name, time, profpic_file, color):
     time_text = f'Today at {time} PM'
     time_position = (NAME_POSITION[0] + name_font.getlength(name) + NAME_TIME_SPACING, TIME_POSITION_Y)
     
-    # Open proile picture
+    # Open profile picture
     prof_pic = Image.open(profpic_file)
     prof_pic.thumbnail([sys.maxsize, PROFPIC_WIDTH], Image.Resampling.LANCZOS)
     
@@ -62,14 +65,13 @@ def generate_chat(messages, name, time, profpic_file, color):
     
     # Create template and draw on template
     template = Image.new(mode='RGBA', size=(WORLD_WIDTH, WORLD_HEIGHTS[len(messages)-1]), color=WORLD_COLOR)
-    template.paste(prof_pic, (36,45), mask)
+    template.paste(prof_pic, PROFPIC_POSITION, mask)
     template_editable = ImageDraw.Draw(template)
-    template_editable.text(NAME_POSITION, name_text, color, font=name_font)
+    template_editable.text(NAME_POSITION, name_text, NAME_FONT_COLOR, font=name_font)
     template_editable.text(time_position, time_text, TIME_FONT_COLOR, font=time_font)
     
     for i, message in enumerate(messages):
-        with Pilmoji(template) as pilmoji:
-            pilmoji.text(MESSAGE_POSITIONS[i], message.strip(), MESSAGE_FONT_COLOR, font=message_font)
+        template_editable.text(MESSAGE_POSITIONS[i], message.strip(), MESSAGE_FONT_COLOR, font=message_font)
             
     return template
 
@@ -113,11 +115,11 @@ def save_images(lines, init_time, dt=30):
             exit()
             
         try:
-            image = generate_chat(messages = current_lines,
-                                name = current_name,
-                                time = f'{current_time.hour % 12}:{current_time.minute}',
-                                profpic_file = f'src/code/profile_pictures/{profile_pic_dict[current_name]}',
-                                color = role_colors[current_name])
+            image = generate_chat(messages=current_lines,
+                                  name=current_name,
+                                  time=f'{current_time.hour % 12}:{current_time.minute}',
+                                  profpic_file=f'src/code/profile_pictures/{profile_pic_dict[current_name]}',
+                                  color=role_colors[current_name])
         except:
             shutil.rmtree(FOLDER_NAME, ignore_errors=True)
             print(f'[err] Invalid name used (`{current_name}`)!')
@@ -126,7 +128,7 @@ def save_images(lines, init_time, dt=30):
         image.save(f'{FOLDER_NAME}/{msg_number:03d}.png')
         
         # update time and msg_number for saving
-        current_time+=datetime.timedelta(0,dt)
+        current_time += datetime.timedelta(0, dt)
         msg_number += 1
 
 
@@ -139,4 +141,3 @@ if __name__ == '__main__':
     current_time = datetime.datetime.now()
     save_images(lines, init_time=current_time)
     gen_vid(sys.argv[1], FOLDER_NAME)
-    
