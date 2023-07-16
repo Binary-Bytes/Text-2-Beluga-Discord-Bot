@@ -18,9 +18,6 @@ module.exports = {
                 .setDescription('Get help on a specific command.')
                 .setRequired(true)),
 	async execute(interaction) {
-        console.log(interaction.options.getString('type'))
-        console.log(interaction.options.getString('feedback'))
-
         let embed = new EmbedBuilder()
             .setColor(interaction.client.embedColor())
             .setDescription('Feedback sent ✅\nThanks for helping in development of the bot :)')

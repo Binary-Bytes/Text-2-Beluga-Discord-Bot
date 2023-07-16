@@ -4,10 +4,7 @@ module.exports = {
     async execute(interaction, descs, time = 60000) {
         await interaction.deferReply();
 
-        console.log(descs, descs.length)
         if (descs.length == 1) {
-            console.log('TWO')
-
             let embed = new EmbedBuilder()
                 .setColor(interaction.client.embedColor())
                 .setDescription(descs[0])
@@ -23,8 +20,6 @@ module.exports = {
 
             return page;
         }
-
-        console.log('THREE')
 
         const prev = new ButtonBuilder()
             .setCustomId('prev')
