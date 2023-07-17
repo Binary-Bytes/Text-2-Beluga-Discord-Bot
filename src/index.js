@@ -1,29 +1,44 @@
 require('dotenv').config();
 
+const express = require('express');
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
-const { TOKEN } = process.env
+const TOKEN = process.env.TOKEN;
+
+// 24/7   24/7   24/7
+
+const app = express();
+
+app.get('/', (req, res) => {
+	res.send('letss goooo!')
+});
+
+app.listen(3000, () => {
+	console.log('server started');
+});
+
+// 24/7   24/7   24/7
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 client.embedColor = () => {
-    let colors = ['#99ffb4', '#cfa6ff', '#ffb0e1', '#ffc973', '#926eff']
-    return colors[Math.floor(Math.random() * colors.length)];
+	let colors = ['#99ffb4', '#cfa6ff', '#ffb0e1', '#ffc973', '#926eff']
+	return colors[Math.floor(Math.random() * colors.length)];
 }
 
 client.format = (text) => {
-    text = text.replaceAll('[gray]', '\u001b[0;30m');
-    text = text.replaceAll('[red]', '\u001b[0;31m');
-    text = text.replaceAll('[green]', '\u001b[0;32m');
-    text = text.replaceAll('[yellow]', '\u001b[0;33m');
-    text = text.replaceAll('[blue]', '\u001b[0;34m');
-    text = text.replaceAll('[pink]', '\u001b[0;35m');
-    text = text.replaceAll('[cyan]', '\u001b[0;36m');
-    text = text.replaceAll('[white]', '\u001b[0;37m');
+	text = text.replaceAll('[gray]', '\u001b[0;30m');
+	text = text.replaceAll('[red]', '\u001b[0;31m');
+	text = text.replaceAll('[green]', '\u001b[0;32m');
+	text = text.replaceAll('[yellow]', '\u001b[0;33m');
+	text = text.replaceAll('[blue]', '\u001b[0;34m');
+	text = text.replaceAll('[pink]', '\u001b[0;35m');
+	text = text.replaceAll('[cyan]', '\u001b[0;36m');
+	text = text.replaceAll('[white]', '\u001b[0;37m');
 
-    text = text.replaceAll('[end]', '\u001b[0;0m');
+	text = text.replaceAll('[end]', '\u001b[0;0m');
 
-    return text;
+	return text;
 }
 
 const eventsPath = path.join(__dirname, 'events');

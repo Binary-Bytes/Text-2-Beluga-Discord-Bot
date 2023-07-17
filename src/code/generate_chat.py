@@ -1,4 +1,5 @@
 from PIL import Image, ImageFont, ImageDraw 
+from pilmoji import Pilmoji
 import sys
 import datetime
 import os
@@ -23,7 +24,6 @@ PROFPIC_POSITION = (36,45)
 NAME_FONT_SIZE = 50
 TIME_FONT_SIZE = 30
 MESSAGE_FONT_SIZE = 50
-NAME_FONT_COLOR = (255,255,255)
 TIME_FONT_COLOR = (180,180,180)
 MESSAGE_FONT_COLOR = (220,220,220)
 NAME_POSITION = (190,53)
@@ -67,11 +67,12 @@ def generate_chat(messages, name, time, profpic_file, color):
     template = Image.new(mode='RGBA', size=(WORLD_WIDTH, WORLD_HEIGHTS[len(messages)-1]), color=WORLD_COLOR)
     template.paste(prof_pic, PROFPIC_POSITION, mask)
     template_editable = ImageDraw.Draw(template)
-    template_editable.text(NAME_POSITION, name_text, NAME_FONT_COLOR, font=name_font)
+    template_editable.text(NAME_POSITION, name_text, color, font=name_font)
     template_editable.text(time_position, time_text, TIME_FONT_COLOR, font=time_font)
     
     for i, message in enumerate(messages):
-        template_editable.text(MESSAGE_POSITIONS[i], message.strip(), MESSAGE_FONT_COLOR, font=message_font)
+        with Pilmoji(template) as pilmoji:
+            pilmoji.text(MESSAGE_POSITIONS[i], message.strip(), MESSAGE_FONT_COLOR, font=message_font)
             
     return template
 
@@ -113,7 +114,7 @@ def save_images(lines, init_time, dt=30):
             shutil.rmtree(FOLDER_NAME, ignore_errors=True)
             print('[err] Invalid file content! Each message line should contain `$^` in the end (followed by duration)')
             exit()
-            
+
         try:
             image = generate_chat(messages=current_lines,
                                   name=current_name,

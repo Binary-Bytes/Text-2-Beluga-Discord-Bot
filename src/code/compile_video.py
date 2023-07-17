@@ -48,7 +48,7 @@ def gen_vid(file_url, folder):
     video_height = 720
 
     # Generate the video using the text file containing image paths and calculated frame rate
-    os.system(f"ffmpeg -f concat -i {image_paths} -vcodec libx264 -crf 25 -vf 'scale={video_width}:{video_height}:force_original_aspect_ratio=decrease,pad={video_width}:{video_height}:(ow-iw)/2:(oh-ih)/2' -pix_fmt yuv420p {input_folder}/output.mp4")
+    os.system(f"ffmpeg -f concat -i {image_paths} -vcodec libx264 -crf 25 -vf 'scale={video_width}:{video_height}:force_original_aspect_ratio=decrease,pad={video_width}:{video_height}:(ow-iw)/2:(oh-ih)/2' -pix_fmt yuv420p -preset ultrafast -tune stillimage {input_folder}/output.mp4")
     
     time.sleep(2)
     print(input_folder)
