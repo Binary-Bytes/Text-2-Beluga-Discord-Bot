@@ -106,7 +106,7 @@ def save_images(lines, init_time, dt=30):
                 exit()
             name_up_next = False
             continue
-        
+
         # otherwise append message
         try:
             current_lines.append(line.split('$^')[0])
@@ -115,10 +115,14 @@ def save_images(lines, init_time, dt=30):
             print('[err] Invalid file content! Each message line should contain `$^` in the end (followed by duration)')
             exit()
 
+        min = current_time.minute
+        if min < 10:
+            min = "0" + str(min)
+
         try:
             image = generate_chat(messages=current_lines,
                                   name=current_name,
-                                  time=f'{current_time.hour % 12}:{current_time.minute}',
+                                  time=f'{current_time.hour % 12}:{min}',
                                   profpic_file=f'src/code/profile_pictures/{profile_pic_dict[current_name]}',
                                   color=role_colors[current_name])
         except:
