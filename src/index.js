@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+const Enmap = require('enmap');
 const express = require('express');
 const fs = require('node:fs');
 const path = require('node:path');
@@ -63,5 +64,12 @@ for (const file of commandFiles) {
 	const command = require(filePath);
 	client.commands.set(command.data.name, command);
 }
+
+const chars = new Enmap({
+	name: 'chars',
+	dataDir: './src/data/chars/'
+});
+
+client.charsDB = chars;
 
 client.login(TOKEN);

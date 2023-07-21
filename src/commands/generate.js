@@ -27,12 +27,21 @@ module.exports = {
 			});
 		}
 
+		let emb = new EmbedBuilder()
+			.setColor(interaction.client.embedColor())
+			.setDescription('Working...');
+
+		interaction.editReply({
+			embeds: [emb]
+		});
+
 		const pythonProcess = spawn("poetry", ["run", "python3", "./src/code/generate_chat.py", interaction.options.getAttachment('file').url]);
 		let folder;
 		let output;
 
 		pythonProcess.stdout.on("data", (data) => {
 			output = data.toString().trim();
+			console.log(`Command output: ${output}`);
 
 			if (output.startsWith('[err]')) {
 				let embed = new EmbedBuilder()
@@ -42,14 +51,13 @@ module.exports = {
 				return interaction.editReply({
 					embeds: [embed]
 				});
-			} else {
-				folder = `./${output}/output.mp4`;
 			}
-			console.log(`Command output: ${data}`);
+
+			folder = `./${output}/output.mp4`;
 		});
 
 		pythonProcess.stderr.on("data", (data) => {
-			console.error(`Error executing command: ${data}`);
+			console.log(data)
 		});
 
 		pythonProcess.on("close", async (code) => {
@@ -71,7 +79,8 @@ module.exports = {
 
 			await interaction.editReply({
 				files: [video],
-				components: [row]
+				components: [row],
+				embeds: []
 			});
 
 			deleteFolderRecursive(folder.replace('output.mp4', ''));

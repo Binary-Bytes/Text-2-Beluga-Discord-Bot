@@ -1,4 +1,4 @@
-const { Events } = require('discord.js');
+const { Events, ActivityType } = require('discord.js');
 const deploy = require('../functions/deploy-commands')
 
 module.exports = {
@@ -6,6 +6,12 @@ module.exports = {
 	once: true,
 	execute(client) {
 		console.log(`Ready! Logged in as ${client.user.tag}`);
-        deploy.execute(client);
+
+		client.user.setActivity({
+			name: `${client.guilds.cache.size} Servers`,
+			type: ActivityType.Watching,
+		});
+
+		deploy.execute(client);
 	},
 };
