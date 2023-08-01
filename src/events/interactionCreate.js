@@ -13,19 +13,30 @@ module.exports = {
 		}
 
 		try {
-			// if (interaction.user.id == '824173216750764032') {
+			let isLocked = interaction.client.miscDB.get('locked');
 
-			// } else {
-			// 	let embed = new EmbedBuilder()
-			// 		.setColor(interaction.client.embedColor())
-			// 		.setDescription('Due to some internal errors, I\'m currently stopped. Hopefully all errors will be resolved soon :)\n\n* Till then try this cool trick :\n * Run `/msg` in any channel of Discord\n * In the user option, paste this number - `1081004946872352958`\n * And in message option, type `hello` and send\nCheck out what happens ;)')
+			if (isLocked != undefined) {
+				if (isLocked) isLocked = true;
+				if (!isLocked) isLocked = false;
+			} else {
+				isLocked = false;
+			}
 
-			// 	return interaction.reply({
-			// 		embeds: [embed]
-			// 	});
-			// }
-
-			await command.execute(interaction);
+			if (isLocked) {
+				if (interaction.user.id == '824173216750764032') {
+					return await command.execute(interaction);
+				} else {
+					let embed = new EmbedBuilder()
+						.setColor(interaction.client.embedColor())
+						.setDescription('Due to some internal errors, I\'m currently stopped. Hopefully all errors will be resolved soon :)\n\n* Till then try this cool trick :\n * Run `/msg` in any channel of Discord\n * In the user option, paste this number - `1081004946872352958`\n * And in message option, type `hello` and send\nCheck out what happens ;)')
+	
+					return interaction.reply({
+						embeds: [embed]
+					});
+				}
+			} else {
+				await command.execute(interaction);
+			}
 		} catch (error) {
 			let embed1 = new EmbedBuilder()
 				.setColor(interaction.client.embedColor())
@@ -35,7 +46,7 @@ module.exports = {
 				.setColor(interaction.client.embedColor())
 				.setDescription(`Error executing ${interaction.commandName} D:\n\n${error}`)
 
-			interaction.reply({
+			interaction.editReply({
 				embeds: [embed1]
 			});
 

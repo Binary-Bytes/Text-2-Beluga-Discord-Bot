@@ -70,6 +70,12 @@ const chars = new Enmap({
 	dataDir: './src/data/chars/'
 });
 
+const misc = new Enmap({
+	name: 'misc',
+	dataDir: './src/data/misc/'
+});
+
 client.charsDB = chars;
+client.miscDB = misc;
 
 client.login(TOKEN);
