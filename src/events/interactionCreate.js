@@ -13,6 +13,18 @@ module.exports = {
 		}
 
 		try {
+			// if (interaction.user.id == '824173216750764032') {
+
+			// } else {
+			// 	let embed = new EmbedBuilder()
+			// 		.setColor(interaction.client.embedColor())
+			// 		.setDescription('Due to some internal errors, I\'m currently stopped. Hopefully all errors will be resolved soon :)\n\n* Till then try this cool trick :\n * Run `/msg` in any channel of Discord\n * In the user option, paste this number - `1081004946872352958`\n * And in message option, type `hello` and send\nCheck out what happens ;)')
+
+			// 	return interaction.reply({
+			// 		embeds: [embed]
+			// 	});
+			// }
+
 			await command.execute(interaction);
 		} catch (error) {
 			let embed1 = new EmbedBuilder()
@@ -29,15 +41,8 @@ module.exports = {
 
 			const channel = interaction.client.channels.cache.get('1130923963636265011');
 			return channel.send({
-				embeds: [embed]
+				embeds: [embed2]
 			});
 		}
-		// let embed = new EmbedBuilder()
-		// 	.setColor(interaction.client.embedColor())
-		// 	.setDescription('Due to some internal errors, I\'m currently stopped. Hopefully all errors will be resolved soon :)\n\n* Till then try this cool trick :\n * Run `/msg` in any channel of Discord\n * In the user option, paste this number - `1081004946872352958`\n * And in message option, type `hello` and send\nCheck out what happens ;)')
-
-		// return interaction.reply({
-		// 	embeds: [embed]
-		// });
 	},
 };

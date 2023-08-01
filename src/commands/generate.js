@@ -41,7 +41,6 @@ module.exports = {
 
 		pythonProcess.stdout.on("data", (data) => {
 			output = data.toString().trim();
-			console.log(`Command output: ${output}`);
 
 			if (output.startsWith('[err]')) {
 				let embed = new EmbedBuilder()

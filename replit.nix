@@ -1,6 +1,7 @@
 { pkgs }: {
 	deps = [
-	pkgs.python39Full
+	pkgs.sudo
+ pkgs.python39Full
     pkgs.poetry
     pkgs.ffmpeg.bin
     pkgs.nodejs-18_x
