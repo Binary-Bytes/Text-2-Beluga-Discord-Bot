@@ -15,7 +15,7 @@ module.exports = {
 				embeds: [embed]
 			});
 		}
-		
+
 		await interaction.deferReply();
 
 		let status = interaction.client.miscDB.get('locked');
@@ -67,6 +67,17 @@ module.exports = {
 		});
 
 		collector.on('collect', async (i) => {
+			if (i.user.id != interaction.user.id) {
+				const embed = new EmbedBuilder()
+					.setDescription('You can\'t use these buttons!')
+					.setColor(interaction.client.embedColor())
+
+				return i.reply({
+					embeds: [embed],
+					ephemeral: true
+				});
+			}
+
 			await i.reply({
 				content: 'Updating..',
 				ephemeral: true
